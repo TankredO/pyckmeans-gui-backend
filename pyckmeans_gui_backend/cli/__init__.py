@@ -1,19 +1,20 @@
-from cloup import command, help_option, version_option, option
-
-from pyckmeans_gui_backend import __version__
-import logging
-
-logger = logging.getLogger('root')
-logging.basicConfig(level=logging.INFO)
+from cloup import command, option, help_option, version_option
+from .. import __version__
 
 
-@command('pyckmeans GUI')
-@option('-p', '--port', help='Server port', show_default=True, default=3000)
-@option('-c/-nc', '--cors/--no-cors', help='CORS setting', show_default=True)
-@version_option(__version__, '--version', '-v')
+@command('Server')
+@option('-p', '--port', help='Server port', default=3000, show_default=True)
 @help_option('-h', '--help')
-def cli(port: int, cors: bool):
-    from ..app import ApplicationServer
+@version_option(__version__, '-v', '--version')
+def cli(port):
+    import uvicorn
 
-    app = ApplicationServer('127.0.0.1', port=port, file_explorer_root='.', cors=cors)
-    app.start()
+    uvicorn.run(
+        'pyckmeans_gui_backend.app:app',
+        port=port,
+        reload=True,
+        access_log=False,
+        workers=1,
+        # limit_concurrency=1,
+        # limit_max_requests=1,
+    )

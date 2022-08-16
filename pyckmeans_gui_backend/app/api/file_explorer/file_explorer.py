@@ -186,12 +186,14 @@ class File:
             if self.type == FileType.DIRECTORY:
                 children = [f.as_dict(-1) for f in self.children]
             return dict(
-                path=str(self.path), stats=self.stats.as_dict(), children=children
+                path=self.path.as_posix(),
+                stats=self.stats.as_dict(),
+                children=children,
             )
 
         if depth < 1:
             return dict(
-                path=str(self.path),
+                path=self.path.as_posix(),
                 stats=self.stats.as_dict(),
                 children=None,
             )
@@ -199,7 +201,11 @@ class File:
         children = None
         if self.type == FileType.DIRECTORY:
             children = [f.as_dict(depth - 1) for f in self.children]
-        return dict(path=str(self.path), stats=self.stats.as_dict(), children=children)
+        return dict(
+            path=self.path.as_posix(),
+            stats=self.stats.as_dict(),
+            children=children,
+        )
 
     def __repr__(self) -> str:
         return f'<File; {self.as_dict()}>'
