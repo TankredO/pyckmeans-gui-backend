@@ -7,18 +7,22 @@ class TestHandler(BaseHandler):
     def get(self):
         self.write("Hello, world")
 
+    def post(self):
+        self.write("Hello, world")
+
 
 def build_handlers(
     base_path: str,
     file_explorer_root: str,
+    cors: bool,
 ) -> Tuple[Tuple[str, Type[BaseHandler], Dict[str, Any]], ...]:
     return (
         (
             f'{base_path}/test',
             TestHandler,
-            dict(),
+            dict(cors=cors),
         ),
         *build_file_explorer_handlers(
-            f'{base_path}/file_explorer', root=file_explorer_root
+            f'{base_path}/file_explorer', root=file_explorer_root, cors=cors
         ),
     )

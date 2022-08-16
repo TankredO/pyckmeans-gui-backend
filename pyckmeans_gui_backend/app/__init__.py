@@ -52,13 +52,15 @@ class MyApplication(tornado.web.Application):
             logger.info('exit success')
 
 
-def create_app(file_explorer_root: str):
+def create_app(file_explorer_root: str, cors: bool):
 
     from .api import build_handlers as build_api_handlers
 
     application = MyApplication(
         [
-            *build_api_handlers('/api', file_explorer_root=file_explorer_root),
+            *build_api_handlers(
+                '/api', file_explorer_root=file_explorer_root, cors=cors
+            ),
             (
                 r'/(.*)',
                 StaticFileHandler,
@@ -80,14 +82,14 @@ class ApplicationServer:
         address: str,
         port: int,
         file_explorer_root: str,
-        cors: bool = True,
+        cors: bool = False,
     ):
         self.address = address
         self.port = port
         self.cors = cors
         self.file_explorer_root = file_explorer_root
 
-        self.tornado_app = create_app(file_explorer_root=file_explorer_root)
+        self.tornado_app = create_app(file_explorer_root=file_explorer_root, cors=cors)
 
     def start(self):
         self.tornado_app.listen(port=self.port, address=self.address)

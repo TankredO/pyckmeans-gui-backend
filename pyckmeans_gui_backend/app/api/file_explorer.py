@@ -16,10 +16,12 @@ if TYPE_CHECKING:
 
 
 class FileExplorerBaseHandler(BaseHandler):
-    def initialize(
+    def initialize(  # type: ignore
         self,
+        cors: bool,
         root: 'PathLike',
     ):
+        super().initialize(cors=cors)
         self.root = Path(root)
         self.file_explorer = file_explorer.FileExplorer(self.root)
 
@@ -61,11 +63,12 @@ class GetFileHandler(FileExplorerBaseHandler):
 def build_handlers(
     base_path: str,
     root: str,
+    cors: bool,
 ) -> Tuple[Tuple[str, Type[BaseHandler], Dict[str, Any]], ...]:
     return (
         (
             f'{base_path}/get_file',
             GetFileHandler,
-            dict(root=root),
+            dict(root=root, cors=cors),
         ),
     )

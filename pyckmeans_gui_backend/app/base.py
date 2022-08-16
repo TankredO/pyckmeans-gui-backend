@@ -187,6 +187,26 @@ class BaseHandler(tornado.web.RequestHandler):
             self._json = tornado.escape.json_decode(self.request.body)
         return self._json
 
+    def options(self):
+        if self.cors:
+            # no body
+            self.set_status(204)
+            self.finish()
+        self.set_status(405)
+        self.finish()
+
+    def initialize(self, cors: bool):
+        self.cors = cors
+
+        if self.cors:
+            self.set_cors_headers()
+
+    def set_cors_headers(self):
+        if self.cors:
+            self.set_header("Access-Control-Allow-Origin", "*")
+            self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+            self.set_header('Access-Control-Allow-Methods', ' PUT, DELETE, OPTIONS')
+
 
 def require_arguments(argument_names=Iterable[str]):
     def decorator(fn):
