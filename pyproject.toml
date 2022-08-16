@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fastapi_filebrowser"
+name = "pyckmeans-gui-backend"
 version = "0.1.0"
 description = ""
 authors = ["Tankred Ott <ott.tankred@gmail.com>"]
