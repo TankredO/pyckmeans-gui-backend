@@ -35,13 +35,6 @@ class FileNotFoundApiError(APIError):
         )
 
 
-class FileNotFoundApiError(APIError):
-    def __init__(self):
-        super().__init__(
-            error_type=APIErrorType.FILE_NOT_FOUND, error_message='File not found'
-        )
-
-
 class RuntimeApiError(APIError):
     def __init__(self):
         super().__init__(
