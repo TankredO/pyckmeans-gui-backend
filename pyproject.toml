@@ -8,10 +8,10 @@ authors = ["Tankred Ott <ott.tankred@gmail.com>"]
 pyckmeans-gui = 'pyckmeans_gui_backend.cli:cli'
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.12"
 tornado = "^6.2"
-tornado-cors = "^0.6.0"
 cloup = "^1.0.0"
+pyckmeans = "^0.9.4"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

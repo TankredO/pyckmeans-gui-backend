@@ -3,6 +3,7 @@ from typing import Tuple, Dict, Any, Type, TYPE_CHECKING
 from ..base import (
     APIErrorType,
     BaseHandler,
+    require_arguments,
     with_json_response,
     APIResponse,
     APIError,
@@ -12,11 +13,6 @@ from ..modules import file_explorer
 
 if TYPE_CHECKING:
     from os import PathLike
-
-
-class TestHandler(BaseHandler):
-    def get(self):
-        self.write("Hello, world")
 
 
 class FileExplorerBaseHandler(BaseHandler):
@@ -45,6 +41,7 @@ class RuntimeApiError(APIError):
 
 class GetFileHandler(FileExplorerBaseHandler):
     @with_json_response
+    @require_arguments(['path'])
     def get(self):
         path = self.get_argument_from_anywhere('path')
         depth = self.get_argument_from_anywhere('depth', 0)
@@ -65,13 +62,7 @@ def build_handlers(
     base_path: str,
     root: str,
 ) -> Tuple[Tuple[str, Type[BaseHandler], Dict[str, Any]], ...]:
-    print(f'{base_path}/test')
     return (
-        (
-            f'{base_path}/test',
-            TestHandler,
-            dict(),
-        ),
         (
             f'{base_path}/get_file',
             GetFileHandler,
